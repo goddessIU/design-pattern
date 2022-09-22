@@ -1,75 +1,48 @@
-interface Subject {
-    attach(observer: Observer): void;
-
-    detach(observer: Observer): void;
-
-    notify(): void;
-}
-
-class ConcreteSubject implements Subject {
-    public state: number;
-    private observers: Observer[] = [];
-
-    public attach(observer: Observer): void {
+class ConcreteSubject {
+    constructor() {
+        this.observers = [];
+    }
+    attach(observer) {
         const isExist = this.observers.includes(observer);
         if (isExist) {
             return console.log('alreay has');
         }
-
         this.observers.push(observer);
     }
-
-    public detach(observer: Observer): void {
+    detach(observer) {
         const observerIndex = this.observers.indexOf(observer);
-
         if (observerIndex <= -1) {
             return console.log('non');
         }
-
         this.observers.splice(observerIndex, 1);
     }
-
-    public notify(): void {
+    notify() {
         for (const observer of this.observers) {
             observer.update(this);
         }
     }
-
-    public someBusinessLogic(): void {
+    someBusinessLogic() {
         this.state = Math.floor(Math.random());
         this.notify();
     }
 }
-
-
-interface Observer {
-    update(subject: Subject): void;
-}
-
-class ConcreteObserverA implements Observer {
-    public update(subject: Subject): void {
+class ConcreteObserverA {
+    update(subject) {
         if (subject instanceof ConcreteSubject) {
             console.log('A update');
         }
     }
 }
-
-class ConcreteObserverB implements Observer {
-    public update(subject: Subject): void {
+class ConcreteObserverB {
+    update(subject) {
         if (subject instanceof ConcreteSubject) {
             console.log('B update');
         }
     }
 }
-
 const subject = new ConcreteSubject();
-
 const observer1 = new ConcreteObserverA();
-
 const observer2 = new ConcreteObserverB();
-
 subject.attach(observer1);
-
 subject.attach(observer2);
-
 subject.someBusinessLogic();
