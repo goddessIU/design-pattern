@@ -10,31 +10,43 @@ class SimpleCommand implements Command {
     }
 
     public execute(): void {
-        console.log('SimpleCommand: see');
+        console.log('hhh');
     }
 }
 
 class ComplexCommand implements Command {
     private receiver: Receiver;
 
+    /**
+     * Context data, required for launching the receiver's methods.
+     */
     private a: string;
+
     private b: string;
 
+    /**
+     * Complex commands can accept one or several receiver objects along with
+     * any context data via the constructor.
+     */
     constructor(receiver: Receiver, a: string, b: string) {
         this.receiver = receiver;
         this.a = a;
         this.b = b;
     }
 
+    /**
+     * Commands can delegate to any methods of a receiver.
+     */
     public execute(): void {
+        console.log('ComplexCommand: Complex stuff should be done by a receiver object.');
         this.receiver.doSomething(this.a);
-        this.receiver.doSomething(this.b);
+        this.receiver.doSomethingElse(this.b);
     }
 }
 
 class Receiver {
     public doSomething(a: string): void {
-        console.log(`Receiver: Working on (${a})`);
+        console.log(`Receiver: Working on (${a}.)`);
     }
 
     public doSomethingElse(b: string): void {
@@ -44,8 +56,12 @@ class Receiver {
 
 class Invoker {
     private onStart: Command;
+
     private onFinish: Command;
 
+    /**
+     * Initialize commands.
+     */
     public setOnStart(command: Command): void {
         this.onStart = command;
     }
@@ -54,11 +70,20 @@ class Invoker {
         this.onFinish = command;
     }
 
+    /**
+     * The Invoker does not depend on concrete command or receiver classes. The
+     * Invoker passes a request to a receiver indirectly, by executing a
+     * command.
+     */
     public doSomethingImportant(): void {
+        console.log('Invoker: Does anybody want something done before I begin?');
         if (this.isCommand(this.onStart)) {
             this.onStart.execute();
         }
 
+        console.log('Invoker: ...doing something really important...');
+
+        console.log('Invoker: Does anybody want something done after I finish?');
         if (this.isCommand(this.onFinish)) {
             this.onFinish.execute();
         }
@@ -70,8 +95,8 @@ class Invoker {
 }
 
 const invoker = new Invoker();
-invoker.setOnStart(new SimpleCommand('Say Hi'));
+invoker.setOnStart(new SimpleCommand('Say Hi!'));
 const receiver = new Receiver();
-invoker.setOnFinish(new ComplexCommand(receiver, 'Send', 'Save'));
+invoker.setOnFinish(new ComplexCommand(receiver, 'Send email', 'Save report'));
 
 invoker.doSomethingImportant();

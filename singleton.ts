@@ -1,36 +1,28 @@
 class Singleton {
-    private static instance: Singleton;
+    private static instance: Singleton | null = null;
 
-    public num: number = 3;
+    private constructor() {
 
-    private constructor() {}
-
-    public static getInstance(): Singleton {
-        if (!Singleton.instance) {
-            Singleton.instance = new Singleton();
-        }
-
-        return Singleton.instance;
     }
 
-    public someBussinessLogic() {
-        if (Singleton.instance) {
-            console.log('the num is ' + Singleton.instance.num);
+    public doSome() {
+        console.log('abc');
+    }
+
+    public static getInstance(): Singleton {
+        // console.log('abc', Singleton.instance);
+        if (Singleton.instance === null) {
+            Singleton.instance = new Singleton();
         }
+        return Singleton.instance;
     }
 }
 
 function clientCode() {
-    const s1 = Singleton.getInstance();
-    const s2 = Singleton.getInstance();
-
-    if (s1 === s2) {
-        console.log("hahaha");
-
-        s1.someBussinessLogic();
-    } else {
-        console.log("lalala");
-    }
+    // console.log(Singleton.getInstance());
+    const instance = Singleton.getInstance();
+    // console.log(instance);
+    instance.doSome();
 }
 
 clientCode();

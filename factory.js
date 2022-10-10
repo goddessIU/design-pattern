@@ -1,65 +1,37 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var Truck = /** @class */ (function () {
-    function Truck() {
+var ConcreteCreatorA = /** @class */ (function () {
+    function ConcreteCreatorA() {
     }
-    Truck.prototype.deliver = function () {
-        return 'i am truck';
+    ConcreteCreatorA.prototype.createProduct = function () {
+        return new ConcreteProductA();
     };
-    return Truck;
+    return ConcreteCreatorA;
 }());
-var Ship = /** @class */ (function () {
-    function Ship() {
+var ConcreteCreatorB = /** @class */ (function () {
+    function ConcreteCreatorB() {
     }
-    Ship.prototype.deliver = function () {
-        return 'i am ship';
+    ConcreteCreatorB.prototype.createProduct = function () {
+        return new ConcreteProductB();
     };
-    return Ship;
+    return ConcreteCreatorB;
 }());
-var Factory = /** @class */ (function () {
-    function Factory() {
+var ConcreteProductA = /** @class */ (function () {
+    function ConcreteProductA() {
     }
-    Factory.prototype.operation = function () {
-        var transport = this.createTransport();
-        console.log(transport.deliver());
+    ConcreteProductA.prototype.doStuff = function () {
+        return 'P A';
     };
-    return Factory;
+    return ConcreteProductA;
 }());
-var RoadLogis = /** @class */ (function (_super) {
-    __extends(RoadLogis, _super);
-    function RoadLogis() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var ConcreteProductB = /** @class */ (function () {
+    function ConcreteProductB() {
     }
-    RoadLogis.prototype.createTransport = function () {
-        return new Truck();
+    ConcreteProductB.prototype.doStuff = function () {
+        return 'P B';
     };
-    return RoadLogis;
-}(Factory));
-var SeaLogis = /** @class */ (function (_super) {
-    __extends(SeaLogis, _super);
-    function SeaLogis() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    SeaLogis.prototype.createTransport = function () {
-        return new Ship();
-    };
-    return SeaLogis;
-}(Factory));
-function makeTransport(factory) {
-    factory.operation();
+    return ConcreteProductB;
+}());
+function clientCode(creator) {
+    console.log(creator.createProduct().doStuff());
 }
-makeTransport(new RoadLogis());
-makeTransport(new SeaLogis());
+clientCode(new ConcreteCreatorA());
+clientCode(new ConcreteCreatorB());

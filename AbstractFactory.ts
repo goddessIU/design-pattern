@@ -1,87 +1,64 @@
 interface AbstractFactory {
-    createProductA(): AbstractProductA;
-
-    createProductB(): AbstractProductB;
+    createProductA(): ProductA;
+    createProductB(): ProductB;
 }
 
 class ConcreteFactory1 implements AbstractFactory {
-    public createProductA(): AbstractProductA {
-        return new ConcreteProductA1();
-    }
+    public createProductA(): ProductA {
+        return new ConcreteProduct1A();
+    }   
 
-    public createProductB(): AbstractProductB {
-        return new ConcreteProductB1();
+    public createProductB(): ProductB {
+        return new ConcreteProduct1B();
     }
 }
 
 class ConcreteFactory2 implements AbstractFactory {
-    public createProductA(): AbstractProductA {
-        return new ConcreteProductA2();
-    }
+    public createProductA(): ProductA {
+        return new ConcreteProduct2A();
+    }   
 
-    public createProductB(): AbstractProductB {
-        return new ConcreteProductB2();
-    }
-}
-
-interface AbstractProductA {
-    usefulFunctionA(): string;
-}
-
-class ConcreteProductA1 implements AbstractProductA {
-    /**
-     * usefulFunctionA
-    */
-    public usefulFunctionA(): string {
-        return 'product A1';
+    public createProductB(): ProductB {
+        return new ConcreteProduct2B();
     }
 }
 
-class ConcreteProductA2 implements AbstractProductA {
-    /**
-     * usefulFunctionA
-     */
-    public usefulFunctionA(): string {
-        return 'product A2';
+abstract class ProductA {
+
+}
+
+abstract class ProductB {
+
+}
+
+class ConcreteProduct1A implements ProductA {
+    constructor() {
+        console.log('1A');
     }
 }
 
-interface AbstractProductB {
-    usefulFunctionB(): string;
-
-    anotherUsefulFunctionB(collaborator: AbstractProductA): string;
-}
-
-class ConcreteProductB1 implements AbstractProductB {
-    public usefulFunctionB(): string {
-        return 'product B1';
-    }
-
-    public anotherUsefulFunctionB(collaborator: AbstractProductA): string {
-        const result = collaborator.usefulFunctionA();
-        return `A: result ${result}`;
+class ConcreteProduct1B implements ProductB {
+    constructor() {
+        console.log('1B');
     }
 }
 
-class ConcreteProductB2 implements AbstractProductB {
-    public usefulFunctionB(): string {
-        return 'product B2';
+class ConcreteProduct2A implements ProductA {
+    constructor() {
+        console.log('2A');
     }
+}
 
-    public anotherUsefulFunctionB(collaborator: AbstractProductA): string {
-        const result = collaborator.usefulFunctionA();
-        return `A: result ${result}`;
+class ConcreteProduct2B implements ProductB {
+    constructor() {
+        console.log('2B');
     }
 }
 
 function clientCode(factory: AbstractFactory) {
-    const productA = factory.createProductA();
-    const productB = factory.createProductB();
-
-    console.log(productB.usefulFunctionB());
-    console.log(productB.anotherUsefulFunctionB(productA));
+    factory.createProductA();
+    factory.createProductB();
 }
 
 clientCode(new ConcreteFactory1());
-
 clientCode(new ConcreteFactory2());

@@ -1,44 +1,38 @@
-interface Transport {
-    deliver(): string;
+interface Creator {
+    createProduct(): Product;
 }
 
-class Truck implements Transport {
-    public deliver(): string {
-        return 'i am truck';
+class ConcreteCreatorA implements Creator {
+    public createProduct(): Product {
+        return new ConcreteProductA();       
     }
 }
 
-class Ship implements Transport {
-    public deliver(): string {
-        return 'i am ship';
+class ConcreteCreatorB implements Creator {
+    public createProduct(): Product {
+        return new ConcreteProductB();
     }
 }
 
-abstract class Factory {
-    abstract createTransport(): Transport;
+interface Product {
+    doStuff(): string;
+}
 
-    public operation(): void {
-        const transport: Transport = this.createTransport();
-        console.log(transport.deliver());
+class ConcreteProductA implements Product {
+    public doStuff(): string {
+        return 'P A';     
     }
 }
 
-class RoadLogis extends Factory {
-    createTransport(): Transport {
-        return new Truck();
+class ConcreteProductB implements Product {
+    public doStuff(): string {
+        return 'P B';
     }
 }
 
-class SeaLogis extends Factory {
-    createTransport(): Transport {
-        return new Ship();
-    }
+function clientCode(creator: Creator) {
+    console.log(creator.createProduct().doStuff());
 }
 
-function makeTransport(factory: Factory) {
-    factory.operation();
-}
-
-makeTransport(new RoadLogis());
-
-makeTransport(new SeaLogis());
+clientCode(new ConcreteCreatorA());
+clientCode(new ConcreteCreatorB());

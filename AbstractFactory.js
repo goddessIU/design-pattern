@@ -2,10 +2,10 @@ var ConcreteFactory1 = /** @class */ (function () {
     function ConcreteFactory1() {
     }
     ConcreteFactory1.prototype.createProductA = function () {
-        return new ConcreteProductA1();
+        return new ConcreteProduct1A();
     };
     ConcreteFactory1.prototype.createProductB = function () {
-        return new ConcreteProductB1();
+        return new ConcreteProduct1B();
     };
     return ConcreteFactory1;
 }());
@@ -13,64 +13,50 @@ var ConcreteFactory2 = /** @class */ (function () {
     function ConcreteFactory2() {
     }
     ConcreteFactory2.prototype.createProductA = function () {
-        return new ConcreteProductA2();
+        return new ConcreteProduct2A();
     };
     ConcreteFactory2.prototype.createProductB = function () {
-        return new ConcreteProductB2();
+        return new ConcreteProduct2B();
     };
     return ConcreteFactory2;
 }());
-var ConcreteProductA1 = /** @class */ (function () {
-    function ConcreteProductA1() {
+var ProductA = /** @class */ (function () {
+    function ProductA() {
     }
-    /**
-     * usefulFunctionA
-    */
-    ConcreteProductA1.prototype.usefulFunctionA = function () {
-        return 'product A1';
-    };
-    return ConcreteProductA1;
+    return ProductA;
 }());
-var ConcreteProductA2 = /** @class */ (function () {
-    function ConcreteProductA2() {
+var ProductB = /** @class */ (function () {
+    function ProductB() {
     }
-    /**
-     * usefulFunctionA
-     */
-    ConcreteProductA2.prototype.usefulFunctionA = function () {
-        return 'product A2';
-    };
-    return ConcreteProductA2;
+    return ProductB;
 }());
-var ConcreteProductB1 = /** @class */ (function () {
-    function ConcreteProductB1() {
+var ConcreteProduct1A = /** @class */ (function () {
+    function ConcreteProduct1A() {
+        console.log('1A');
     }
-    ConcreteProductB1.prototype.usefulFunctionB = function () {
-        return 'product B1';
-    };
-    ConcreteProductB1.prototype.anotherUsefulFunctionB = function (collaborator) {
-        var result = collaborator.usefulFunctionA();
-        return "A: result ".concat(result);
-    };
-    return ConcreteProductB1;
+    return ConcreteProduct1A;
 }());
-var ConcreteProductB2 = /** @class */ (function () {
-    function ConcreteProductB2() {
+var ConcreteProduct1B = /** @class */ (function () {
+    function ConcreteProduct1B() {
+        console.log('1B');
     }
-    ConcreteProductB2.prototype.usefulFunctionB = function () {
-        return 'product B2';
-    };
-    ConcreteProductB2.prototype.anotherUsefulFunctionB = function (collaborator) {
-        var result = collaborator.usefulFunctionA();
-        return "A: result ".concat(result);
-    };
-    return ConcreteProductB2;
+    return ConcreteProduct1B;
+}());
+var ConcreteProduct2A = /** @class */ (function () {
+    function ConcreteProduct2A() {
+        console.log('2A');
+    }
+    return ConcreteProduct2A;
+}());
+var ConcreteProduct2B = /** @class */ (function () {
+    function ConcreteProduct2B() {
+        console.log('2B');
+    }
+    return ConcreteProduct2B;
 }());
 function clientCode(factory) {
-    var productA = factory.createProductA();
-    var productB = factory.createProductB();
-    console.log(productB.usefulFunctionB());
-    console.log(productB.anotherUsefulFunctionB(productA));
+    factory.createProductA();
+    factory.createProductB();
 }
 clientCode(new ConcreteFactory1());
 clientCode(new ConcreteFactory2());

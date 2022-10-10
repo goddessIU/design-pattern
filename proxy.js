@@ -1,33 +1,28 @@
-var RealSubject = /** @class */ (function () {
-    function RealSubject() {
-    }
-    RealSubject.prototype.request = function () {
-        console.log('Real Subject');
-    };
-    return RealSubject;
-}());
 var Proxy1 = /** @class */ (function () {
-    function Proxy1(realSubject) {
-        this.realSubject = realSubject;
+    function Proxy1(s) {
+        this.realService = s;
     }
-    Proxy1.prototype.request = function () {
-        if (this.checkAccess()) {
-            this.realSubject.request();
-            this.logAccess();
-        }
-    };
     Proxy1.prototype.checkAccess = function () {
-        console.log('Proxy: Check Access');
-        return true;
+        console.log('i am access');
+        return Boolean(this.realService);
     };
-    Proxy1.prototype.logAccess = function () {
-        console.log('Proxy log');
+    Proxy1.prototype.operation = function () {
+        console.log(this.realService.operation());
     };
     return Proxy1;
 }());
-function clientCode(subject) {
-    subject.request();
+var Service1 = /** @class */ (function () {
+    function Service1() {
+    }
+    Service1.prototype.operation = function () {
+        return 3;
+    };
+    return Service1;
+}());
+function clientCode(proxy) {
+    if (proxy.checkAccess()) {
+        proxy.operation();
+    }
 }
-var realSubject = new RealSubject();
-var proxy = new Proxy1(realSubject);
-clientCode(proxy);
+var p = new Proxy1(new Service1());
+clientCode(p);

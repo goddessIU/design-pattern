@@ -1,42 +1,35 @@
-interface SUbject {
-    request(): void;
+interface ServiceInterface {
+    operation();
 }
 
-class RealSubject implements SUbject {
-    public request(): void {
-        console.log('Real Subject');
-    }
-}
-
-class Proxy1 implements SUbject {
-    private realSubject: RealSubject;
-
-    constructor(realSubject: RealSubject) {
-        this.realSubject = realSubject;
+class Proxy1 implements ServiceInterface {
+    public realService: Service1;
+    
+    constructor(s: Service1) {
+        this.realService = s;
     }
 
-    public request(): void {
-        if (this.checkAccess()) {
-            this.realSubject.request();
-            this.logAccess();
-        }
+    checkAccess() {
+        console.log('i am access');
+        return Boolean(this.realService);
     }
 
-    public checkAccess(): boolean {
-        console.log('Proxy: Check Access');
-        return true;
-    }
-
-    public logAccess(): void {
-        console.log('Proxy log');
+    operation() {
+        console.log(this.realService.operation());
     }
 }
 
-function clientCode(subject: SUbject) {
-    subject.request();
+class Service1 implements ServiceInterface {
+    public operation() {
+        return 3;   
+    }
 }
 
-const realSubject = new RealSubject();
-const proxy = new Proxy1(realSubject);
+function clientCode(proxy: Proxy1) {
+    if (proxy.checkAccess()) {
+        proxy.operation();
+    }
+}
 
-clientCode(proxy);
+const p = new Proxy1(new Service1());
+clientCode(p);

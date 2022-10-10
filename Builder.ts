@@ -1,72 +1,92 @@
+type makeType = 'A' | 'B'
+
 interface Builder {
-    producePartA(): void;
-    producePartB(): void;
-    producePartC(): void;
-}
-
-class ConcreteBuilder1 implements Builder {
-    private product: Product1;
-
-    constructor() {
-        this.reset();
-    }
-
-    public reset(): void {
-        this.product = new Product1();
-    }
-
-    public producePartA(): void {
-        this.product.parts.push('PartA1');
-    }
-
-    public producePartB(): void {
-        this.product.parts.push('PartB1');
-    }
-
-    public producePartC(): void {
-        this.product.parts.push('PartC1');
-    }
-
-    public getProduct(): Product1 {
-        const result = this.product;
-        this.reset();
-        return result;
-    }
+    reset(): void;
+    buildStepA(): void;
+    buildStepB(): void;
+    buildStepC(): void;
 }
 
 class Product1 {
-    public parts: string[] = [];
 
-    public listParts(): void {
-        console.log(`Product parts: ${this.parts.join(', ')}`);
+}
+
+class Product2 {
+
+}
+
+class ConcreteBuilder1 implements Builder {
+    public result: Product1;
+
+    public reset(): void {
+        
+    }
+
+    public buildStepA(): void {
+        
+    }
+
+    public buildStepB(): void {
+        
+    }
+
+    public buildStepC(): void {
+        
+    }
+
+    public getResult(): Product1 {
+        return new Product1();
+    }
+}
+
+class ConcreteBuilder2 implements Builder {
+    public result: Product1;
+
+    public reset(): void {
+        
+    }
+
+    public buildStepA(): void {
+        
+    }
+
+    public buildStepB(): void {
+        
+    }
+
+    public buildStepC(): void {
+        
+    }
+
+    public getResult(): Product2 {
+        return new Product2();
     }
 }
 
 class Director {
-    private builder: Builder;
+    public builder: Builder;
 
-    public setBuilder(builder: Builder): void {
+    public changeBuilder(builder: Builder) {
         this.builder = builder;
     }
 
-    public buildMinimalViableProduct(): void {
-        this.builder.producePartA();
-        this.builder.producePartB();
-        this.builder.producePartC();
+    public make(type: makeType): void{
+        if (type === 'A') {
+            this.builder.buildStepA();
+            this.builder.buildStepB();
+            this.builder.buildStepC();
+        } else if (type === 'B') {
+            this.builder.buildStepA();
+            this.builder.buildStepC();
+            this.builder.buildStepB();
+        }
     }
 }
 
 function clientCode(director: Director) {
     const builder = new ConcreteBuilder1();
-    director.setBuilder(builder);
-
-    builder.getProduct().listParts();
-
-    builder.producePartA();
-    builder.producePartB();
-    builder.producePartC();
-
-    builder.getProduct().listParts();
+    director.changeBuilder(builder);
+    director.make('A');
 }
 
 const director = new Director();

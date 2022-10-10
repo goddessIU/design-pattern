@@ -1,42 +1,33 @@
 var Facade = /** @class */ (function () {
-    function Facade(subsystem1, subsystem2) {
-        this.subsystem1 = subsystem1 || new Subststem1();
-        this.subsystem2 = subsystem2 || new Subsystem2();
+    function Facade(sub1, sub2) {
+        this.sub1 = sub1;
+        this.sub2 = sub2;
     }
     Facade.prototype.operation = function () {
-        var result = 'Facade init\n';
-        result += this.subsystem1.operation1();
-        result += this.subsystem2.operation1();
-        return result;
+        var d = this.sub1.operate() + this.sub2.operate();
+        console.log(d);
+        return d;
     };
     return Facade;
 }());
-var Subststem1 = /** @class */ (function () {
-    function Subststem1() {
+var SubSystem1 = /** @class */ (function () {
+    function SubSystem1() {
     }
-    Subststem1.prototype.operation1 = function () {
-        return 'Subsystem1';
+    SubSystem1.prototype.operate = function () {
+        return 3;
     };
-    Subststem1.prototype.operationN = function () {
-        return 'subsystem N';
-    };
-    return Subststem1;
+    return SubSystem1;
 }());
-var Subsystem2 = /** @class */ (function () {
-    function Subsystem2() {
+var SubSystem2 = /** @class */ (function () {
+    function SubSystem2() {
     }
-    Subsystem2.prototype.operation1 = function () {
-        return 'Subsystem2: ready';
+    SubSystem2.prototype.operate = function () {
+        return 6;
     };
-    Subsystem2.prototype.operationZ = function () {
-        return 'Subsystem2: Fire!';
-    };
-    return Subsystem2;
+    return SubSystem2;
 }());
-function clientCode(facade) {
+function clientCode() {
+    var facade = new Facade(new SubSystem1(), new SubSystem2());
     console.log(facade.operation());
 }
-var subsystem1 = new Subststem1();
-var subsystem2 = new Subsystem2();
-var facade = new Facade(subsystem1, subsystem2);
-clientCode(facade);
+clientCode();

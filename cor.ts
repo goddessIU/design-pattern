@@ -1,74 +1,31 @@
 interface Handler {
-    setNext(handler: Handler): Handler;
-
-    handle(request: string): string;
+    setNext(h: Handler): Handler;
+    handle(r: string);
 }
 
-abstract class AbstractHandler implements Handler {
-    private nextHandler: Handler;
+class BaseHandler implements Handler {
+    public next: Handler;
 
-    public setNext(handler: Handler): Handler {
-        this.nextHandler = handler;
-
-        return handler;
+    public setNext(h: Handler): Handler {
+        this.next = h;
+        return this.next;
     }
 
-    public handle(request: string): string {
-        if (this.nextHandler) {
-            return this.nextHandler.handle(request);
+    handle(r: string) {
+        if (this.next) {
+            return this.next.handle(r);
         }
 
         return null;
     }
-}
+}   
 
-class MonkeyHandler extends AbstractHandler {
-    public handle(request: string): string {
-        if (request === 'Banana') {
-            return 'Monkey' + request;
-        }
-        return super.handle(request);
+class ConcreteHandler extends BaseHandler {
+    handle(r: string): void {
+        
     }
 }
 
-class SquirrelHandler extends AbstractHandler {
-    public handle(request: string): string {
-        if (request === 'Nut') {
-            return `Squirrel: I'll eat the ${request}.`;
-        }
-        return super.handle(request);
-    }
+function clientCode() {
+
 }
-
-class DogHandler extends AbstractHandler {
-    public handle(request: string): string {
-        if (request === 'MeatBall') {
-            return `Dog: I'll eat the ${request}.`;
-        }
-        return super.handle(request);
-    }
-}
-
-function clientCode(handler: Handler) {
-    const foods = ['Nut', 'Banana', 'Cup of coffee'];
-
-    for (const food of foods) {
-        const result = handler.handle(food);
-
-        if (result) {
-            console.log(`  ${result}`);
-        } else {
-            console.log(`  ${food} was left untouched`);
-        }
-    }
-}
-
-const monkey = new MonkeyHandler();
-const squirrel = new SquirrelHandler();
-const dog = new DogHandler();
-
-monkey.setNext(squirrel).setNext(dog);
-
-
-clientCode(monkey);
-clientCode(squirrel);
